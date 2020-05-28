@@ -29,7 +29,7 @@ object Boot extends App {
   private val program: ZIO[HttpServer with Console, Throwable, Unit] =
     HttpServer.start.use(_ => putStrLn(s"Server online. Press RETURN to stop...") <* getStrLn)
 
-  private def prepareEnvironment(rawConfig: Config): TaskLayer[HttpServer] = {
+  private def prepareEnvironment(rawConfig: Config): ZLayer[Clock with Console, Throwable, HttpServer] = {
     val configLayer = TypesafeConfig.fromTypesafeConfig(rawConfig, AppConfig.descriptor)
 
     // using raw config since it's recommended and the simplest to work with slick
@@ -67,6 +67,8 @@ object Boot extends App {
         (api, gApi, p) => api.routes ~ gApi.routes ~ p.routes
       }
 
-    (actorSystemLayer ++ apiConfigLayer ++ (apiLayer ++ graphQLApiLayer ++ panopticonEndpointsLayer >>> routesLayer)) >>> HttpServer.live
+    val zioZMXLayer = zio.zmx.Diagnostics.live("localhost", 6789)
+
+    (actorSystemLayer ++ zioZMXLayer ++ apiConfigLayer ++ (apiLayer ++ graphQLApiLayer ++ panopticonEndpointsLayer >>> routesLayer)) >>> HttpServer.live
   }
 }
