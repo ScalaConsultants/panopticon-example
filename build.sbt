@@ -5,6 +5,9 @@ lazy val zioVersion        = "1.0.0-RC19"
 lazy val zioLoggingVersion = "0.2.9"
 lazy val zioConfigVersion  = "1.0.0-RC18"
 lazy val calibanVersion    = "0.8.0"
+lazy val zioZMXVersion     = "0.0.0+18-e7b43dbb-SNAPSHOT"
+
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
 lazy val root = (project in file(".")).settings(
   inThisBuild(
@@ -26,8 +29,11 @@ lazy val root = (project in file(".")).settings(
     "dev.zio"               %% "zio-config"                  % zioConfigVersion,
     "dev.zio"               %% "zio-config-magnolia"         % zioConfigVersion,
     "dev.zio"               %% "zio-config-typesafe"         % zioConfigVersion,
+    "dev.zio"               %% "zio-zmx"                     % zioZMXVersion,
     "io.scalac"             %% "zio-akka-http-interop"       % "0.1.0",
     "io.scalac"             %% "zio-slick-interop"           % "0.1.0",
+    "io.scalac"             %% "akka-periscope-core"         % "0.2.0",
+    "io.scalac"             %% "akka-periscope-akka-http"    % "0.2.0",
     "dev.zio"               %% "zio-interop-reactivestreams" % "1.0.3.5-RC8",
     "ch.qos.logback"        % "logback-classic"              % "1.2.3",
     "dev.zio"               %% "zio-logging"                 % zioLoggingVersion,
@@ -36,7 +42,7 @@ lazy val root = (project in file(".")).settings(
     "com.github.ghostdogpr" %% "caliban"                     % calibanVersion,
     "com.github.ghostdogpr" %% "caliban-akka-http"           % calibanVersion,
     "com.typesafe.akka"     %% "akka-http-testkit"           % akkaHttpVersion % Test,
-    "com.typesafe.akka"     %% "akka-actor-testkit-typed"    % akkaVersion %  Test,
+    "com.typesafe.akka"     %% "akka-actor-testkit-typed"    % akkaVersion % Test,
     "dev.zio"               %% "zio-test-sbt"                % zioVersion % Test
   ),
   testFrameworks := Seq(new TestFramework("zio.test.sbt.ZTestFramework"))
