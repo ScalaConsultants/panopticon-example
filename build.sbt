@@ -1,13 +1,11 @@
 lazy val akkaHttpVersion   = "10.1.12"
 lazy val akkaVersion       = "2.6.5"
 lazy val slickVersion      = "3.3.2"
-lazy val zioVersion        = "1.0.0-RC19"
-lazy val zioLoggingVersion = "0.2.9"
-lazy val zioConfigVersion  = "1.0.0-RC18"
-lazy val calibanVersion    = "0.8.0"
-lazy val zioZMXVersion     = "0.0.0+19-248827dc-SNAPSHOT"
-
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+lazy val zioVersion        = "1.0.0-RC20"
+lazy val zioLoggingVersion = "0.3.0"
+lazy val zioConfigVersion  = "1.0.0-RC20"
+lazy val calibanVersion    = "0.8.1"
+lazy val zioZMXVersion     = "0.0.2"
 
 lazy val root = (project in file(".")).settings(
   inThisBuild(
