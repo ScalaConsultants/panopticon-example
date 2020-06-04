@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.interop._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import io.scalac.panopticon.akka.http.{ ActorCountRoute, ActorTreeRoute }
+import io.scalac.periscope.akka.http.{ ActorCountRoute, ActorTreeRoute }
 import zio._
 
 object PanopticonEndpoints {
