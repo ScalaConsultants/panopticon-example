@@ -4,8 +4,10 @@ import akka.actor.ActorSystem
 import akka.http.interop._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import io.scalac.periscope.akka.http.{ ActorCountRoute, ActorTreeRoute }
+import io.scalac.periscope.akka.http.{ ActorCountRoute, ActorTreeRoute, DeadLettersMonitorRoute }
 import zio._
+
+import scala.concurrent.ExecutionContext
 
 object PanopticonEndpoints {
 
@@ -16,8 +18,10 @@ object PanopticonEndpoints {
   val live: ZLayer[Has[ActorSystem], Nothing, PanopticonEndpoints] = ZLayer.fromFunction(env =>
     new Service with ZIOSupport {
 
-      implicit val ec = env.get.dispatcher
+      implicit val system: ActorSystem  = env.get
+      implicit val ec: ExecutionContext = system.dispatcher
 
+      val deadLetters: Route = DeadLettersMonitorRoute()
       def routes: Route =
         pathPrefix("panopticon") {
           pathPrefix("actor-tree") {
@@ -25,7 +29,8 @@ object PanopticonEndpoints {
           } ~
           pathPrefix("actor-count") {
             ActorCountRoute(env.get)
-          }
+          } ~
+          pathPrefix("dead-letters") { deadLetters }
         }
     }
   )

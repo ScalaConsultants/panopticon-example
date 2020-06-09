@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import com.example.api._
 import com.example.api.graphql.GraphQLApi
 import com.example.config.AppConfig
-import com.example.domain.ItemRepository
+import com.example.domain.{ DeadLettersSimulator, ItemRepository }
 import com.example.infrastructure._
 import slick.interop.zio.DatabaseProvider
 import akka.http.scaladsl.server.Route
@@ -69,6 +69,7 @@ object Boot extends App {
 
     val zioZMXLayer = zio.zmx.Diagnostics.live("localhost", 6789)
 
-    (actorSystemLayer ++ zioZMXLayer ++ apiConfigLayer ++ (apiLayer ++ graphQLApiLayer ++ panopticonEndpointsLayer >>> routesLayer)) >>> HttpServer.live
+    val deadLettersSimulator = (actorSystemLayer ++ Clock.live) >>> DeadLettersSimulator.live
+    (actorSystemLayer ++ deadLettersSimulator ++ zioZMXLayer ++ apiConfigLayer ++ (apiLayer ++ graphQLApiLayer ++ panopticonEndpointsLayer >>> routesLayer)) >>> HttpServer.live
   }
 }
