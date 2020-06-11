@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.interop._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import io.scalac.periscope.akka.http.{ ActorCountRoute, ActorTreeRoute, DeadLettersMonitorRoute }
+import io.scalac.periscope.akka.http.{ ActorSystemStatusRoute, ActorTreeRoute, DeadLettersMonitorRoute }
 import zio._
 
 import scala.concurrent.ExecutionContext
@@ -27,10 +27,10 @@ object PanopticonEndpoints {
           pathPrefix("actor-tree") {
             ActorTreeRoute(env.get)
           } ~
-          pathPrefix("actor-count") {
-            ActorCountRoute(env.get)
+          pathPrefix("actor-system-status") {
+            ActorSystemStatusRoute(env.get)
           } ~
-          pathPrefix("dead-letters") { deadLetters }
+          pathPrefix("dead-letters")(deadLetters)
         }
     }
   )
