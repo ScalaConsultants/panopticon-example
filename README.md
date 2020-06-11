@@ -24,5 +24,6 @@ panopticon-tui \
   --jmx localhost:9010 \
   --db-pool-name myDb \
   --actor-tree http://localhost:8080/panopticon/actor-tree \
-  --actor-count http://localhost:8080/panopticon/actor-count
+  --actor-system-status http://localhost:8080/panopticon/actor-system-status
+  --dead-letters http://localhost:8080/panopticon/dead-letters
 ```
