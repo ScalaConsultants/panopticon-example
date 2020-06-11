@@ -27,7 +27,7 @@ object Boot extends App {
       .catchAll(error => putStrLn(error.getMessage).as(ExitCode.failure))
 
   private val program: ZIO[HttpServer with Console, Throwable, Unit] =
-    HttpServer.start.use(_ => putStrLn(s"Server online. Press RETURN to stop...") <* getStrLn)
+    HttpServer.start.tapM(_ => putStrLn(s"Server online.")).useForever
 
   private def prepareEnvironment(rawConfig: Config): ZLayer[zio.ZEnv, Throwable, HttpServer] = {
     val configLayer = TypesafeConfig.fromTypesafeConfig(rawConfig, AppConfig.descriptor)
