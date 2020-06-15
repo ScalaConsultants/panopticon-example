@@ -67,7 +67,7 @@ object Boot extends App {
         (api, gApi, p) => api.routes ~ gApi.routes ~ p.routes
       }
 
-    val zioZMXLayer = zio.zmx.Diagnostics.live("localhost", 6789)
+    val zioZMXLayer = zio.zmx.Diagnostics.live("0.0.0.0", 6789)
 
     val deadLettersSimulator = (actorSystemLayer ++ Clock.live) >>> DeadLettersSimulator.live
     (actorSystemLayer ++ deadLettersSimulator ++ zioZMXLayer ++ apiConfigLayer ++ (apiLayer ++ graphQLApiLayer ++ panopticonEndpointsLayer >>> routesLayer)) >>> HttpServer.live

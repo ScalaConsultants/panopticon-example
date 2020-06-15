@@ -11,10 +11,21 @@ lazy val zioZMXVersion     = "0.0.2"
 
 val dockerReleaseSettings = Seq(
   dockerExposedPorts := Seq(8080, 6789, 9010),
+  dockerExposedUdpPorts := Seq(6789),
   dockerExposedVolumes := Seq("/opt/docker/logs"),
   dockerBaseImage := "adoptopenjdk/openjdk12:x86_64-ubuntu-jre-12.0.2_10",
   dockerUsername := Some("vpavkin"),
   dockerUpdateLatest := true
+)
+
+val javaOpts = Seq(
+  "-Dcom.sun.management.jmxremote",
+  "-Dcom.sun.management.jmxremote.port=9010",
+  "-Dcom.sun.management.jmxremote.rmi.port=9010",
+  "-Dcom.sun.management.jmxremote.local.only=false",
+  "-Dcom.sun.management.jmxremote.authenticate=false",
+  "-Dcom.sun.management.jmxremote.ssl=false",
+  "-Djava.rmi.server.hostname=0.0.0.0"
 )
 
 lazy val root = (project in file("."))
@@ -25,16 +36,11 @@ lazy val root = (project in file("."))
         scalaVersion := "2.13.1"
       )
     ),
+    version := "0.1.1-SNAPSHOT",
     name := "panopticon-example",
     Compile / run / fork := true,
-    javaOptions ++= Seq(
-      "-Dcom.sun.management.jmxremote",
-      "-Dcom.sun.management.jmxremote.port=9010",
-      "-Dcom.sun.management.jmxremote.rmi.port=9010",
-      "-Dcom.sun.management.jmxremote.local.only=false",
-      "-Dcom.sun.management.jmxremote.authenticate=false",
-      "-Dcom.sun.management.jmxremote.ssl=false"
-    ),
+    javaOptions ++= javaOpts,
+    javaOptions in Universal ++= javaOpts,
     addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1"),
     libraryDependencies ++= Seq(
       "com.typesafe.akka"     %% "akka-http"                   % akkaHttpVersion,
