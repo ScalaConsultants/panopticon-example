@@ -36,7 +36,7 @@ lazy val root = (project in file("."))
         scalaVersion := "2.13.1"
       )
     ),
-    version := "0.1.1-SNAPSHOT",
+    version := "0.1.0",
     name := "panopticon-example",
     Compile / run / fork := true,
     javaOptions ++= javaOpts,
