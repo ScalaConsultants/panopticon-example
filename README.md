@@ -27,3 +27,5 @@ panopticon-tui \
   --actor-system-status http://localhost:8080/panopticon/actor-system-status
   --dead-letters http://localhost:8080/panopticon/dead-letters
 ```
+
+Developed by [Scalac](https://scalac.io/?utm_source=scalac_github&utm_campaign=scalac1&utm_medium=web)
